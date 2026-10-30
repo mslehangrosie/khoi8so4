@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E8 Revision 123 - Ms Lê Hằng English</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #8854c0, #fdcb6e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            color: #2d3436;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating SVG Pattern Overlay */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M11 18l1.5 4.5H17l-3.5 2.5 1.5 4.5-3.5-2.5-3.5 2.5 1.5-4.5L6 22.5h4.5zM60 70l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6zM80 20a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM20 75a5 5 0 1 0 0 10 5 5 0 0 0 0-10z'/%3E%3C/g%3E%3C/svg%3E");
+            animation: floatPattern 20s linear infinite;
+        }
+
+        @keyframes floatPattern {
+            from { background-position: 0 0; }
+            to { background-position: 100px 200px; }
+        }
+
+        /* 3D Gamified Buttons */
+        .btn-option {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-bottom: 6px solid #cbd5e1;
+            border-radius: 18px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+            user-select: none;
+        }
+
+        .btn-option:hover:not(.disabled) {
+            transform: translateY(-2px);
+            border-bottom-width: 8px;
+            background-color: #f8fafc;
+        }
+
+        .btn-option:active:not(.disabled) {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        /* Correct Answer State */
+        .btn-option.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            border-bottom-color: #15803d !important;
+            color: #15803d !important;
+            font-weight: 800;
+        }
+
+        /* Incorrect Answer State */
+        .btn-option.wrong {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            border-bottom-color: #b91c1c !important;
+            color: #b91c1c !important;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        /* Card Container */
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border: 4px solid #ffffff;
+        }
+
+        /* Custom Sign Board Styling */
+        .sign-board {
+            background: #ffffff;
+            border: 6px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 8px 0 #0f172a;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .notice-board {
+            background: #fef08a;
+            border: 3px dashed #ca8a04;
+            border-radius: 12px;
+            padding: 16px;
+            color: #854d0e;
+            font-weight: 700;
+            box-shadow: 0 6px 0 #facc15;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Sticky Progress Bar */
+        .progress-sticky {
+            position: sticky;
+            top: 10px;
+            z-index: 40;
+            backdrop-filter: blur(12px);
+        }
+
+        .explanation-box {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="py-6 px-3 sm:px-6 relative">
+
+    <div class="bg-pattern"></div>
+
+    <div class="max-w-4xl mx-auto relative z-10 space-y-6">
+
+        <!-- HEADER & BRANDING -->
+        <header class="text-center bg-white/90 rounded-3xl p-5 shadow-xl border-4 border-white">
+            <div class="inline-block bg-purple-600 text-white font-black px-4 py-1 rounded-full text-sm mb-2 shadow-sm">
+                🎓 Giáo viên tạo: Ms Lê Hằng English
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-purple-900 tracking-tight">
+                ĐỀ ÔN TAP TIẾNG ANH 8 (E8-Revision 123)
+            </h1>
+            <p class="text-xs sm:text-sm font-bold text-pink-600 mt-1">
+                📞 Đăng kí học tiếng anh 1-12, IELTS vui lòng liên hệ Ms Lê Hằng, zalo: <span class="underline">0584 965 348</span>
+            </p>
+        </header>
+
+        <!-- WARNING NOTICE BOX -->
+        <div class="bg-amber-100 border-l-8 border-amber-500 rounded-2xl p-4 shadow-lg text-amber-900 font-bold space-y-2">
+            <div class="flex items-center space-x-2 text-lg text-amber-800 font-black">
+                <span>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</span>
+            </div>
+            <p class="text-sm sm:text-base leading-relaxed">
+                Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+                <span class="text-red-600 underline">Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!</span><br>
+                ✨ <strong>Kéo tới đâu, làm tới đó!</strong> ✨
+            </p>
+        </div>
+
+        <!-- STICKY PROGRESS BAR -->
+        <div class="progress-sticky bg-white/95 rounded-2xl p-4 shadow-md border-2 border-purple-200 flex items-center justify-between gap-4">
+            <div class="flex-1">
+                <div class="flex justify-between text-xs font-black text-purple-700 mb-1">
+                    <span>Tiến độ bài làm</span>
+                    <span id="progress-text">0 / 60 đã trả lời</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden p-0.5 border border-slate-300">
+                    <div id="progress-bar" class="bg-gradient-to-r from-emerald-400 to-green-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-bold text-slate-500 block">Điểm hiện tại</span>
+                <span id="current-score" class="text-xl font-black text-purple-600">0 / 60</span>
+            </div>
+        </div>
+
+        <!-- QUESTIONS CONTAINER -->
+        <main id="quiz-container" class="space-y-6">
+            <!-- Questions rendered via JS -->
+        </main>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="text-center py-6">
+            <button onclick="submitQuiz()" class="bg-emerald-500 hover:bg-emerald-600 active:translate-y-1 text-white text-xl font-black px-10 py-4 rounded-3xl shadow-lg border-b-8 border-emerald-700 transition duration-150 inline-flex items-center gap-3">
+                <i class="fa-solid fa-paper-plane"></i>
+                NỘP BÀI TỔNG KẾT
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL POPUP -->
+    <div id="result-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center space-y-5 shadow-2xl border-4 border-purple-300 transform transition-all scale-95 opacity-0" id="modal-card">
+            <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto text-4xl text-purple-600 shadow-inner">
+                🏆
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800">KẾT QUẢ BÀI LÀM</h2>
+            
+            <div class="bg-purple-50 p-4 rounded-2xl border-2 border-purple-200">
+                <p class="text-sm font-bold text-purple-600 uppercase tracking-wide">Số câu đúng</p>
+                <p class="text-4xl font-black text-purple-800 my-1"><span id="final-score">0</span> / <span id="final-total">60</span></p>
+                <p class="text-sm font-extrabold text-emerald-600" id="final-percentage">0%</p>
+            </div>
+
+            <!-- Personalized Teacher Feedback Message -->
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-left">
+                <p class="font-extrabold text-amber-900 text-sm mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-comment-dots"></i> Lời nhắn từ Ms Lê Hằng:
+                </p>
+                <p id="teacher-feedback" class="text-sm font-semibold text-amber-800 italic leading-relaxed">
+                    <!-- Dynamic comment -->
+                </p>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-2xl border-b-4 border-purple-800 shadow-md">
+                Xem lại đáp án & Giải thích
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // WEB AUDIO API SOUND SYNTHESIZER (No external files required)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (type === 'correct') {
+                // Bright high bell chime (Ding)
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.3); // C6
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'wrong') {
+                // Gentle low buzz sound
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            }
+        }
+
+        // 60 COMPLETE QUESTIONS DATA (STRICT 100% COVERAGE)
+        const rawQuestions = [
+            // Q1-Q22 Image 1
+            {
+                q: "Choose the word whose underlined part is pronounced differently:",
+                options: ["A. laugh<u>ed</u>", "B. wash<u>ed</u>", "C. danc<u>ed</u>", "D. play<u>ed</u>"],
+                key: 3,
+                exp: {
+                    t: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+                    opts: ["A. laughed (/t/)", "B. washed (/t/)", "C. danced (/t/)", "D. played (/d/)"],
+                    why: "Đuôi '-ed' ở 'played' phát âm là /d/ (sau âm hữu thanh /eɪ/). Các đáp án A, B, C kết thúc bằng âm vô thanh (/f/, /ʃ/, /s/) nên '-ed' phát âm là /t/.",
+                    wrong: "A, B, C đều tuân theo quy tắc '-ed' phát âm là /t/."
+                }
+            },
+            {
+                q: "Choose the word whose underlined part is pronounced differently:",
+                options: ["A. tr<u>o</u>phy", "B. pr<u>o</u>blem", "C. br<u>o</u>ccoli", "D. dr<u>o</u>p"],
+                key: 0,
+                exp: {
+                    t: "Chọn từ có phần gạch chân phát âm khác.",
+                    opts: ["A. trophy (n): cúp (/əʊ/)", "B. problem (n): vấn đề (/ɒ/)", "C. broccoli (n): súp lơ (/ɒ/)", "D. drop (v): rơi (/ɒ/)"],
+                    why: "Chữ 'o' trong 'trophy' phát âm là /əʊ/ ('trəʊfi'). Ở các từ còn lại phát âm là /ɒ/.",
+                    wrong: "B, C, D đều phát âm nguyên âm /ɒ/."
+                }
+            },
+            {
+                q: "Choose the word whose main stress is different from the others:",
+                options: ["A. teenager", "B. sensitive", "C. tournament", "D. enjoyable"],
+                key: 3,
+                exp: {
+                    t: "Chọn từ có trọng âm chính khác các từ còn lại.",
+                    opts: ["A. 'teenager (n): thanh thiếu niên (trọng âm 1)", "B. 'sensitive (adj): nhạy cảm (trọng âm 1)", "C. 'tournament (n): giải đấu (trọng âm 1)", "D. en'joyable (adj): thú vị (trọng âm 2)"],
+                    why: "’enjoyable’ có trọng âm rơi vào âm tiết thứ 2 (en-'joy-able). Các từ khác trọng âm rơi vào âm tiết 1.",
+                    wrong: "A, B, C đều có trọng âm rơi vào âm tiết đầu tiên."
+                }
+            },
+            {
+                q: "Choose the word whose main stress is different from the others:",
+                options: ["A. common", "B. problem", "C. project", "D. connect"],
+                key: 3,
+                exp: {
+                    t: "Chọn từ có trọng âm chính khác.",
+                    opts: ["A. 'common (adj): phổ biến (trọng âm 1)", "B. 'problem (n): vấn đề (trọng âm 1)", "C. 'project (n): dự án (trọng âm 1)", "D. con'nect (v): kết nối (trọng âm 2)"],
+                    why: "'connect' là động từ 2 âm tiết nên trọng âm thường rơi vào âm tiết thứ 2. Danh từ/tính từ 2 âm tiết khác có trọng âm ở âm 1.",
+                    wrong: "A, B, C có trọng âm ở âm tiết 1."
+                }
+            },
+            {
+                q: "Alice spends a lot of time _____ her own; she always exercises regularly and does what she enjoys.",
+                options: ["A. on", "B. in", "C. about", "D. for"],
+                key: 0,
+                exp: {
+                    t: "Alice dành nhiều thời gian một mình; cô ấy luôn tập thể dục đều đặn và làm những gì mình thích.",
+                    opts: ["A. on (giới từ): trên", "B. in (giới từ): trong", "C. about (giới từ): về", "D. for (giới từ): cho"],
+                    why: "Cụm từ cố định 'on one's own' = 'alone' (một mình). Dùng 'on her own'.",
+                    wrong: "Các giới từ in, about, for không đi với cụm 'her own' để mang nghĩa một mình."
+                }
+            },
+            {
+                q: "Nam: 'Dad, I've got the first rank in class in English this semester!' - Mr. Thanh: '_____'",
+                options: ["A. Thank you!", "B. Never mind.", "C. Well done!", "D. You're welcome."],
+                key: 2,
+                exp: {
+                    t: "Nam: 'Bố ơi, học kỳ này con đứng nhất lớp môn Tiếng Anh!' - Bố Thanh: '_____'",
+                    opts: ["A. Cảm ơn con!", "B. Đừng bận tâm.", "C. Giỏi lắm! / Làm tốt lắm!", "D. Không có gì."],
+                    why: "Khi ai đó thông báo thành tích tốt, câu khen ngợi thích hợp nhất là 'Well done!' (Giỏi lắm!).",
+                    wrong: "A, B, D sai ngữ cảnh giao tiếp đáp lại lời khen hoặc cảm ơn."
+                }
+            },
+            {
+                q: "The teacher asks the whole class to _____ on studying to prepare well for the midterm exam.",
+                options: ["A. advise", "B. focus", "C. connect", "D. coach"],
+                key: 1,
+                exp: {
+                    t: "Giáo viên yêu cầu cả lớp tập trung vào việc học để chuẩn bị tốt cho bài thi giữa kỳ.",
+                    opts: ["A. advise (v): khuyên", "B. focus (v): tập trung", "C. connect (v): kết nối", "D. coach (v): huấn luyện"],
+                    why: "Cấu trúc 'focus on + V-ing/N': tập trung vào cái gì.",
+                    wrong: "Advise + O + to V; Connect + with; Coach không đi trực tiếp với giới từ 'on' trong ngữ cảnh này."
+                }
+            },
+            {
+                q: "Steven dislikes _____, so he usually takes a bus to work.",
+                options: ["A. to drive", "B. to be driven", "C. be driven", "D. driving"],
+                key: 3,
+                exp: {
+                    t: "Steven không thích lái xe, vì vậy anh ấy thường đi xe buýt đi làm.",
+                    opts: ["A. to drive: lái xe", "B. to be driven: được lái", "C. be driven: bị lái", "D. driving: việc lái xe (V-ing)"],
+                    why: "Động từ 'dislike' bắt buộc đi với Danh động từ (V-ing): dislike + V-ing.",
+                    wrong: "A, B dùng to-V sai cấu trúc; C sai dạng động từ nguyên mẫu không 'to'."
+                }
+            },
+            {
+                q: "I found it _____ to watch the football match.",
+                options: ["A. enjoy", "B. enjoyable", "C. enjoyed", "D. Enjoyment"],
+                key: 1,
+                exp: {
+                    t: "Tôi cảm thấy rất thú vị khi xem trận thi đấu bóng đá.",
+                    opts: ["A. enjoy (v): thưởng thức", "B. enjoyable (adj): thú vị", "C. enjoyed (v-ed): đã thích", "D. Enjoyment (n): sự thích thú"],
+                    why: "Cấu trúc: 'find + it + Adj + to-V' (thấy cái gì như thế nào khi làm gì). Cần tính từ 'enjoyable'.",
+                    wrong: "A là động từ; C là dạng quá quứ; D là danh từ."
+                }
+            },
+            {
+                q: "Most teenagers today have at least one social media _____ for entertainment and study.",
+                options: ["A. account", "B. leader", "C. midterm", "D. teenager"],
+                key: 0,
+                exp: {
+                    t: "Hầu hết thanh thiếu niên ngày nay đều có ít nhất một tài khoản mạng xã hội để giải trí và học tập.",
+                    opts: ["A. account (n): tài khoản", "B. leader (n): người lãnh đạo", "C. midterm (n): giữa kỳ", "D. teenager (n): thiếu niên"],
+                    why: "Cụm danh từ 'social media account': tài khoản mạng xã hội.",
+                    wrong: "B, C, D không tạo thành cụm từ có nghĩa hợp lý với 'social media'."
+                }
+            },
+            {
+                q: "My sister dances _____ than me.",
+                options: ["A. gooder", "B. weller", "C. better", "D. more good"],
+                key: 2,
+                exp: {
+                    t: "Chị gái tôi nhảy đẹp/giỏi hơn tôi.",
+                    opts: ["A. gooder (sai từ)", "B. weller (sai từ)", "C. better (adj/adv): tốt hơn/giỏi hơn", "D. more good (sai ngữ pháp)"],
+                    why: "'dance' là động từ thường nên cần trạng từ 'well'. Dạng so sánh hơn của 'well' là 'better'.",
+                    wrong: "Trong tiếng Anh không tồn tại dạng từ 'gooder' hay 'weller'."
+                }
+            },
+            {
+                q: "On the side of the road, a boy was herding _____.",
+                options: ["A. kites", "B. hay", "C. cattle", "D. blackberries"],
+                key: 2,
+                exp: {
+                    t: "Ở bên vệ đường, một cậu bé đang chăn gia súc.",
+                    opts: ["A. kites (n): diều", "B. hay (n): cỏ khô", "C. cattle (n): gia súc (bò, trâu)", "D. blackberries (n): quả mâm xôi"],
+                    why: "Động từ 'herd' nghĩa là chăn giữ gia súc -> đi với 'cattle' (herd cattle).",
+                    wrong: "Kites dùng với 'fly'; hay dùng với 'collect/load'; blackberries dùng với 'pick'."
+                }
+            },
+            {
+                q: "Using computers too much may have harmful effects _____ your minds and bodies.",
+                options: ["A. on", "B. into", "C. with", "D. to"],
+                key: 0,
+                exp: {
+                    t: "Sử dụng máy tính quá nhiều có thể gây tác hại xấu lên trí óc và cơ thể bạn.",
+                    opts: ["A. on (giới từ): trên/lên", "B. into (giới từ): vào trong", "C. with (giới từ): với", "D. to (giới từ): tới"],
+                    why: "Cấu trúc cố định: 'have an effect ON sth/sb' (có ảnh hưởng/tác động tới ai/cái gì).",
+                    wrong: "Các giới từ B, C, D không kết hợp với 'effect' trong cấu trúc này."
+                }
+            },
+            {
+                q: "_____ should we meet on Sunday? - Let's meet at 10 a.m.",
+                options: ["A. Where", "B. How many", "C. What time", "D. Why"],
+                key: 2,
+                exp: {
+                    t: "Chúng ta nên gặp nhau lúc mấy giờ vào Chủ Nhật? - Hãy gặp nhau lúc 10 giờ sáng.",
+                    opts: ["A. Where: Ở đâu", "B. How many: Bao nhiêu", "C. What time: Mấy giờ", "D. Why: Tại sao"],
+                    why: "Câu trả lời chỉ mốc thời gian 'at 10 a.m.' nên từ hỏi phải là 'What time'.",
+                    wrong: "Where hỏi địa điểm; How many hỏi số lượng; Why hỏi lý do."
+                }
+            },
+            {
+                q: "Children in this village love _____ kites on summer afternoons.",
+                options: ["A. fling", "B. flying", "C. flow", "D. flies"],
+                key: 1,
+                exp: {
+                    t: "Trẻ em ở làng này thích thả diều vào những buổi chiều mùa hè.",
+                    opts: ["A. fling (v): ném", "B. flying (v-ing): thả (diều)", "C. flow (v): chảy", "D. flies (v-es): bay"],
+                    why: "Cấu trúc 'love + V-ing' (thích làm gì) và cụm 'fly kites' (thả diều). Dạng đúng là 'flying'.",
+                    wrong: "A, C sai nghĩa từ vựng; D sai dạng ngữ pháp sau 'love'."
+                }
+            },
+            {
+                q: "When I have the whole free day, I prefer _____ to the outskirts to staying in the city.",
+                options: ["A. went", "B. to go", "C. go", "D. going"],
+                key: 3,
+                exp: {
+                    t: "Khi có cả ngày rảnh, tôi thích đi ra vùng ngoại ô hơn là ở lại trong thành phố.",
+                    opts: ["A. went (v-ed)", "B. to go (to V)", "C. go (v-bare)", "D. going (V-ing)"],
+                    why: "Cấu trúc so sánh sở thích: 'prefer V-ing TO V-ing' (thích làm việc A hơn việc B). Phía sau có 'to staying' nên vị trí trước cần 'going'.",
+                    wrong: "A, B, C không khớp với cấu trúc 'prefer V-ing to V-ing'."
+                }
+            },
+            {
+                q: "Bob: 'I'm sure you will love this new cartoon.' - Lily: '_____' ",
+                options: ["A. Yes, it's right up my street.", "B. How nice of you to say so!", "C. Yes. That's alright.", "D. You're welcome."],
+                key: 0,
+                exp: {
+                    t: "Bob: 'Tớ chắc chắn cậu sẽ thích bộ phim hoạt hình mới này.' - Lily: '_____'",
+                    opts: ["A. Đúng vậy, nó đúng là sở thích của tớ đấy.", "B. Cậu thật tốt khi nói vậy!", "C. Vâng, không sao đâu.", "D. Không có gì."],
+                    why: " Thành ngữ 'right up my street' nghĩa là 'đúng sở thích/đúng gu của tôi'.",
+                    wrong: "B dùng để đáp lại lời khen cá nhân; C, D không đúng ngữ cảnh."
+                }
+            },
+            {
+                q: "Teenagers should learn teamwork and communication skills to _____ difficult situations in life.",
+                options: ["A. concentrate on", "B. deal with", "C. show off", "D. connect with"],
+                key: 1,
+                exp: {
+                    t: "Thanh thiếu niên nên học kỹ năng làm việc nhóm và giao tiếp để giải quyết các tình huống khó khăn trong cuộc sống.",
+                    opts: ["A. concentrate on: tập trung vào", "B. deal with: giải quyết/đối mặt", "C. show off: khoe khoang", "D. connect with: kết nối với"],
+                    why: "Cụm 'deal with difficult situations' nghĩa là giải quyết/xử lý các tình huống khó khăn.",
+                    wrong: "A, C, D không phù hợp nghĩa khi đi với 'difficult situations'."
+                }
+            },
+            {
+                q: "Teenagers have _____ from their exams, peers and parents. This makes them feel very stressed.",
+                options: ["A. friends", "B. pressure", "C. relative", "D. interests"],
+                key: 1,
+                exp: {
+                    t: "Thanh thiếu niên chịu áp lực từ thi cử, bạn bè đồng lứa và cha mẹ. Điều này khiến các em cảm thấy rất căng thẳng.",
+                    opts: ["A. friends (n): bạn bè", "B. pressure (n): áp lực", "C. relative (n): họ hàng", "D. interests (n): sở thích"],
+                    why: "Cụm 'have pressure from...': có/chịu áp lực từ ai. Dẫn đến 'feel stressed'.",
+                    wrong: "A, C, D không phù hợp ngữ cảnh nguyên nhân gây ra căng thẳng (stressed)."
+                }
+            },
+            {
+                q: "Teens may be able to communicate with peers and other people; _____, they will develop social skills.",
+                options: ["A. because", "B. therefore", "C. otherwise", "D. however"],
+                key: 1,
+                exp: {
+                    t: "Thanh thiếu niên có thể giao tiếp với bạn bè và những người khác; do đó, các em sẽ phát triển kỹ năng xã hội.",
+                    opts: ["A. because: bởi vì", "B. therefore: do đó/vì vậy", "C. otherwise: nếu không thì", "D. however: tuy nhiên"],
+                    why: "'therefore' dùng để chỉ kết quả (đứng sau dấu chấm phẩy và trước dấu phẩy).",
+                    wrong: "A không đi sau dấu ';'; C, D mang nghĩa trái ngược/diễn đạt điều kiện."
+                }
+            },
+            {
+                q: "Mi is _____ gardening in her free time.",
+                options: ["A. In", "B. to", "C. at", "D. into"],
+                key: 3,
+                exp: {
+                    t: "Mi rất thích làm vườn vào thời gian rảnh rỗi.",
+                    opts: ["A. in", "B. to", "C. at", "D. into"],
+                    why: "Cấu trúc 'be into something' = 'be fond of / like something' (thích/mê cái gì).",
+                    wrong: "In, to, at không đi với 'be' để tạo nghĩa đam mê/thích thú một sở thích."
+                }
+            },
+            {
+                q: "Mai dislikes _____ her pictures to Facebook. She prefers not to show them to others.",
+                options: ["A. to upload", "B. uploading", "C. upload", "D. uploads"],
+                key: 1,
+                exp: {
+                    t: "Mai không thích tải ảnh của mình lên Facebook. Cô ấy không muốn cho người khác xem.",
+                    opts: ["A. to upload", "B. uploading (V-ing)", "C. upload", "D. uploads"],
+                    why: "Động từ 'dislike + V-ing': không thích làm gì.",
+                    wrong: "A, C, D không tuân thủ quy tắc sau 'dislike' là V-ing."
+                }
+            },
+
+            // Q23-Q33 Image 2
+            {
+                q: "Now they all chat with each other _____ than before because they have smartphones.",
+                options: ["A. more frequent", "B. most frequently", "C. frequently", "D. more frequently"],
+                key: 3,
+                exp: {
+                    t: "Bây giờ tất cả họ trò chuyện với nhau thường xuyên hơn trước vì họ có điện thoại thông minh.",
+                    opts: ["A. more frequent (tính từ so sánh hơn - sai)", "B. most frequently (so sánh nhất)", "C. frequently (trạng từ thường)", "D. more frequently (trạng từ so sánh hơn)"],
+                    why: "Động từ 'chat' cần trạng từ 'frequently'. Có từ 'than' -> cấu trúc so sánh hơn của trạng từ dài: 'more frequently'.",
+                    wrong: "A là tính từ; B là so sánh nhất; C chưa có dạng so sánh."
+                }
+            },
+            {
+                q: "'You connect better _____ people depending on how honest you are.'",
+                options: ["A. on", "B. of", "C. with", "D. for"],
+                key: 2,
+                exp: {
+                    t: "'Bạn kết nối tốt hơn với mọi người tùy thuộc vào mức độ thành thật của bạn.'",
+                    opts: ["A. on", "B. of", "C. with: với", "D. for"],
+                    why: "Cấu trúc 'connect with people': kết nối với mọi người.",
+                    wrong: "A, B, D sai giới từ đi kèm với 'connect'."
+                }
+            },
+            {
+                q: "People in my village grow rice in vast _____ fields.",
+                options: ["A. corn", "B. wheat", "C. pad", "D. paddy"],
+                key: 3,
+                exp: {
+                    t: "Người dân ở làng tôi trồng lúa trên những cánh đồng lúa bao la.",
+                    opts: ["A. corn (n): ngô", "B. wheat (n): lúa mì", "C. pad (n): đệm", "D. paddy (n): lúa/đồng lúa"],
+                    why: "Cụm danh từ 'paddy fields': cánh đồng lúa.",
+                    wrong: "Corn field (đồng ngô), wheat field (đồng lúa mì) không dùng để trồng 'rice' (lúa)."
+                }
+            },
+            {
+                q: "In my free time, my younger brother is _____ on taking photos and doing puzzles.",
+                options: ["A. fond", "B. keen", "C. interested", "D. crazy"],
+                key: 1,
+                exp: {
+                    t: "Vào thời gian rảnh, em trai tôi rất thích chụp ảnh và giải ô chữ.",
+                    opts: ["A. fond (đi với 'of')", "B. keen (đi với 'on')", "C. interested (đi với 'in')", "D. crazy (đi với 'about')"],
+                    why: "Cấu trúc 'be keen on + V-ing': thích/đam mê làm gì.",
+                    wrong: "Fond of, Interested in, Crazy about -> Phía sau đề bài là giới từ 'on' nên chỉ 'keen' đúng."
+                }
+            },
+            {
+                q: "<strong>Sign Question:</strong> What does the sign say?",
+                customCard: `
+                    <div class="sign-board">
+                        <div class="flex justify-center gap-4 text-3xl text-red-600 mb-2">
+                            <i class="fa-solid fa-mobile-screen-button line-through"></i>
+                            <i class="fa-solid fa-phone-slash"></i>
+                        </div>
+                        <div class="font-black text-slate-900 border-t-2 border-slate-900 pt-1 text-sm tracking-wide uppercase">
+                            NO CELL PHONE USE IN THIS CLASSROOM
+                        </div>
+                    </div>
+                `,
+                options: [
+                    "A. You are allowed to use cell phones everywhere in this area.",
+                    "B. Using cell phones is not permitted in this area.",
+                    "C. You may use cell phones here only for emergencies.",
+                    "D. Using cell phones is encouraged and allowed here."
+                ],
+                key: 1,
+                exp: {
+                    t: "Biển báo nói gì? ('KHÔNG SỬ DỤNG ĐIỆN THOẠI TRONG PHÒNG HỌC NÀY')",
+                    opts: [
+                        "A. Bạn được phép dùng điện thoại khắp nơi.",
+                        "B. Việc sử dụng điện thoại không được cho phép ở khu vực này.",
+                        "C. Bạn chỉ dùng điện thoại khi khẩn cấp.",
+                        "D. Dùng điện thoại được khuyến khích."
+                    ],
+                    why: "'NO CELL PHONE USE' đồng nghĩa với 'is not permitted' (không được cho phép).",
+                    wrong: "A, C, D sai hoàn toàn so với nội dung cấm của biển báo."
+                }
+            },
+            {
+                q: "<strong>Notice Question:</strong> What does the notice say?",
+                customCard: `
+                    <div class="notice-board">
+                        <p class="text-sm">"No food or drink is allowed inside this area. Please finish your snacks before entering"</p>
+                    </div>
+                `,
+                options: [
+                    "A. Only food is not allowed; drinks are fine.",
+                    "B. You can eat and drink inside this area.",
+                    "C. Do not bring food or drinks inside. Finish them first.",
+                    "D. You can bring food but no drinks are allowed."
+                ],
+                key: 2,
+                exp: {
+                    t: "Thông báo nói gì? ('Không được mang đồ ăn, thức uống vào khu vực này. Vui lòng ăn xong đồ ăn nhẹ trước khi vào')",
+                    opts: [
+                        "A. Chỉ cấm đồ ăn, đồ uống thì được.",
+                        "B. Bạn có thể ăn uống bên trong.",
+                        "C. Không mang đồ ăn hay thức uống vào trong. Hãy ăn xong trước.",
+                        "D. Có thể mang đồ ăn nhưng cấm nước uống."
+                    ],
+                    why: "Nội dung cấm cả đồ ăn lẫn thức uống ('No food or drink') và yêu cầu ăn xong trước khi vào ('Finish them first').",
+                    wrong: "A, B, D diễn đạt sai câu chữ trong thông báo."
+                }
+            },
+
+            // Reading Passage 1 (Q29-Q33)
+            {
+                q: "<strong>Reading 1 (Q29):</strong> 'Plan your day and decide what (29)_____ activities you want to do.'",
+                options: ["A. unnecessary", "B. boring", "C. productive", "D. tiring"],
+                key: 2,
+                exp: {
+                    t: "Lên kế hoạch cho ngày của bạn và quyết định những hoạt động (29) bổ ích/có năng suất mà bạn muốn làm.",
+                    opts: ["A. unnecessary: không cần thiết", "B. boring: nhàm chán", "C. productive: bổ ích/có năng suất", "D. tiring: mệt mỏi"],
+                    why: "Bài viết khuyên cách sử dụng thời gian rảnh khôn khéo (wisely), nên chọn tính từ tích cực 'productive'.",
+                    wrong: "A, B, D mang nghĩa tiêu cực, không hợp văn cảnh."
+                }
+            },
+            {
+                q: "<strong>Reading 1 (Q30):</strong> 'Spend time on outdoor activities like walking or (30)_____ to stay active.'",
+                options: ["A. cycle", "B. to cycle", "C. cycled", "D. cycling"],
+                key: 3,
+                exp: {
+                    t: "Dành thời gian cho các hoạt động ngoài trời như đi bộ hoặc (30) đi xe đạp để giữ cơ thể năng động.",
+                    opts: ["A. cycle (v)", "B. to cycle (to-V)", "C. cycled (v-ed)", "D. cycling (V-ing)"],
+                    why: "Từ nối 'or' nối hai từ cùng dạng. Phía trước có 'walking' (V-ing) nên vị trí sau 'or' chọn 'cycling' (V-ing).",
+                    wrong: "A, B, C không song hành về dạng từ với 'walking'."
+                }
+            },
+            {
+                q: "<strong>Reading 1 (Q31):</strong> 'Avoid spending too much time (31)_____ your phone or computer.'",
+                options: ["A. making", "B. looking", "C. using", "D. doing"],
+                key: 2,
+                exp: {
+                    t: "Tránh dành quá nhiều thời gian (31) sử dụng điện thoại hoặc máy tính.",
+                    opts: ["A. making: làm/tạo", "B. looking: nhìn", "C. using: sử dụng", "D. doing: làm"],
+                    why: "Cụm động từ đi với phone/computer là 'using your phone/computer' (sử dụng điện thoại/máy tính).",
+                    wrong: "Making/doing không kết hợp với phone; looking cần giới từ 'at'."
+                }
+            },
+            {
+                q: "<strong>Reading 1 (Q32):</strong> 'Spend time with friends (32)_____ family and share fun experiences.'",
+                options: ["A. but", "B. or", "C. so", "D. yet"],
+                key: 1,
+                exp: {
+                    t: "Dành thời gian cho bạn bè (32) hoặc gia đình và chia sẻ những trải nghiệm vui vẻ.",
+                    opts: ["A. but: nhưng", "B. or: hoặc/hay", "C. so: vì vậy", "D. yet: tuy nhiên"],
+                    why: "Liên từ 'or' được dùng để lựa chọn hoặc bổ sung nhóm đối tượng tương đương (friends or family).",
+                    wrong: "A, C, D không đúng mối quan hệ ý nghĩa giữa bạn bè và gia đình."
+                }
+            },
+            {
+                q: "<strong>Reading 1 (Q33):</strong> 'Call the emergency services if you are in (33)_____.'",
+                options: ["A. danger", "B. dangers", "C. dangerous", "D. dangerously"],
+                key: 0,
+                exp: {
+                    t: "Gọi dịch vụ khẩn cấp nếu bạn gặp (33) nguy hiểm.",
+                    opts: ["A. danger (n): sự nguy hiểm", "B. dangers (n số nhiều)", "C. dangerous (adj)", "D. dangerously (adv)"],
+                    why: "Cụm thành ngữ: 'be in danger' (gặp nguy hiểm). Dùng danh từ không đếm được 'danger'.",
+                    wrong: "B, C, D không đúng cấu trúc cố định 'in danger'."
+                }
+            },
+
+            // Q34-Q40 Reading Passage 2 Image 3
+            {
+                q: "<strong>Reading 2 (Q34):</strong> What is the best title for this paragraph?",
+                options: [
+                    "A. Life as a British Teenager",
+                    "B. How to Pass GCSE Exams",
+                    "C. Popular Fashion Trends in Britain",
+                    "D. The Advantages of School Uniform"
+                ],
+                key: 0,
+                exp: {
+                    t: "Tiêu đề tốt nhất cho đoạn văn này là gì?",
+                    opts: [
+                        "A. Cuộc sống của một thiếu niên Anh",
+                        "B. Làm thế nào để vượt qua kỳ thi GCSE",
+                        "C. Xu hướng thời trang phổ biến ở Anh",
+                        "D. Những lợi ích của đồng phục học sinh"
+                    ],
+                    why: "Đoạn văn bao quát các khía cạnh: Trường học, Đồng phục, Trang phục/Diện mạo của giới trẻ Anh -> Tiêu đề quát là 'Life as a British Teenager'.",
+                    wrong: "B, C, D chỉ là các ý nhỏ chi tiết nằm trong từng đoạn."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q35):</strong> Most students in Britain take the GCSE when _____.",
+                options: [
+                    "A. they are 11 years old",
+                    "B. they are 16 years old",
+                    "C. they finish grade 10",
+                    "D. they begin grade 11"
+                ],
+                key: 1,
+                exp: {
+                    t: "Hầu hết học sinh ở Anh tham gia kỳ thi GCSE khi nào?",
+                    opts: ["A. 11 tuổi", "B. 16 tuổi", "C. hoàn thành lớp 10", "D. bắt đầu lớp 11"],
+                    why: "Căn cứ đoạn 1: 'Students in Britain can leave school at sixteen (grade 11). This is also the age when most students take their first important exams, the GCSE.' -> 16 tuổi.",
+                    wrong: "A, C, D không chính xác so với thông tin trong bài đọc."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q36):</strong> What is the first thing you'll notice when you visit almost any school in Britain?",
+                options: [
+                    "A. The school logo",
+                    "B. The school gate",
+                    "C. The school playground",
+                    "D. The school uniform"
+                ],
+                key: 3,
+                exp: {
+                    t: "Điều đầu tiên bạn sẽ nhận thấy khi đến thăm hầu hết các trường học ở Anh là gì?",
+                    opts: ["A. Logo trường", "B. Cổng trường", "C. Sân chơi", "D. Đồng phục học sinh"],
+                    why: "Căn cứ câu đầu đoạn 2: 'Visit almost any school in Britain and the first thing you'll notice is the school uniform.'",
+                    wrong: "A, B, C không được đề cập là điều đầu tiên nhận thấy."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q37):</strong> The word 'highlight' in paragraph 2 is CLOSEST in meaning to _____.",
+                options: ["A. confuse", "B. remark", "C. emphasize", "D. decrease"],
+                key: 2,
+                exp: {
+                    t: "Từ 'highlight' trong đoạn 2 GẦN NGHĨA NHẤT với từ nào?",
+                    opts: ["A. confuse: làm bối rối", "B. remark: nhận xét", "C. emphasize: nhấn mạnh/làm nổi bật", "D. decrease: giảm"],
+                    why: "'highlight' nghĩa là làm nổi bật, nhấn mạnh = 'emphasize'.",
+                    wrong: "A, B, D không đồng nghĩa với 'highlight'."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q38):</strong> When they are 15 or 16 most teenagers are _____ uniform.",
+                options: [
+                    "A. are keen on wearing",
+                    "B. are tired of wearing",
+                    "C. are interested in designing",
+                    "D. enjoy wearing"
+                ],
+                key: 1,
+                exp: {
+                    t: "Khi 15 hoặc 16 tuổi, hầu hết các em thiếu niên đều _____ đồng phục.",
+                    opts: ["A. thích mặc", "B. mệt mỏi/chán mặc", "C. thích thiết kế", "D. thích thú mặc"],
+                    why: "Căn cứ đoạn 2: 'when they are 15 or 16 most teenagers are tired of wearing it.'",
+                    wrong: "A, C, D trái ngược với thông tin 'tired of wearing' trong bài."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q39):</strong> The word 'trendy' in paragraph 3 is OPPOSITE in meaning to _____.",
+                options: ["A. modern", "B. fashionable", "C. outdated", "D. popular"],
+                key: 2,
+                exp: {
+                    t: "Từ 'trendy' (thời trang/chạy theo mốt) trong đoạn 3 TRÁI NGHĨA với từ nào?",
+                    opts: ["A. modern: hiện đại", "B. fashionable: hợp thời trang", "C. outdated: lỗi thời/lạc hậu", "D. popular: phổ biến"],
+                    why: "'trendy' (hợp mốt) trái nghĩa với 'outdated' (lỗi thời, lạc hậu).",
+                    wrong: "A, B, D là các từ đồng nghĩa hoặc cùng hướng nghĩa với 'trendy'."
+                }
+            },
+            {
+                q: "<strong>Reading 2 (Q40):</strong> According to the passage, which of the following statements is NOT true?",
+                options: [
+                    "A. Students in Britain can take 8 subjects at the GCSE.",
+                    "B. Most British teenagers spend 2-3 hours watching TV after school.",
+                    "C. Most 16-year-old students in Britain don't like school uniforms.",
+                    "D. Many British teenagers judge their friends by their shirt or trainers."
+                ],
+                key: 1,
+                exp: {
+                    t: "Theo đoạn văn, phát biểu nào sau đây KHÔNG ĐÚNG?",
+                    opts: [
+                        "A. Học sinh có thể thi 8 môn GCSE. (Đúng, vì bài nêu từ 5-10 môn)",
+                        "B. Hầu hết thiếu niên Anh dành 2-3 giờ xem TV sau giờ học. (SAI)",
+                        "C. Hầu hết học sinh 16 tuổi không thích đồng phục. (Đúng, tired of wearing)",
+                        "D. Nhiều học sinh đánh giá bạn bè qua áo hoặc giày. (Đúng, đoạn 3)"
+                    ],
+                    why: "Bài ghi: 'Forget watching TV, teenagers in Britain now spend 2-3 hours on homework' (Dành 2-3 giờ làm BTVN chứ không phải xem TV). Do đó B SAI.",
+                    wrong: "A, C, D đều là thông tin chính xác có trong bài."
+                }
+            },
+
+            // Q41-Q45 Error Identification Image 3
+            {
+                q: "Find the underlined part that needs correction: '<u>Going fishing</u> (A) alone <u>is</u> (B) one of my <u>Dad's</u> (C) favorite leisure <u>activity</u>. (D)'",
+                options: [
+                    "A. Going fishing",
+                    "B. is",
+                    "C. Dad's",
+                    "D. activity"
+                ],
+                key: 3,
+                exp: {
+                    t: "Tìm lỗi sai trong câu: 'Đi câu cá một mình là một trong những hoạt động giải trí yêu thích của bố tôi.'",
+                    opts: ["A. Going fishing", "B. is", "C. Dad's", "D. activity -> sửa thành 'activities'"],
+                    why: "Cấu trúc 'one of + N số nhiều' (một trong những...). 'activity' phải sửa thành số nhiều 'activities'.",
+                    wrong: "A đúng vai trò chủ ngữ; B chia động từ số ít 'is' đúng với V-ing; C dạng sở hữu cách đúng."
+                }
+            },
+            {
+                q: "Find the underlined part that needs correction: 'She <u>sings</u> (A) that song <u>much</u> (B) <u>more better</u> (C) than I <u>do</u>. (D)'",
+                options: [
+                    "A. sings",
+                    "B. much",
+                    "C. more better",
+                    "D. do"
+                ],
+                key: 2,
+                exp: {
+                    t: "Tìm lỗi sai trong câu: 'Cô ấy hát bài hát đó tốt hơn tôi nhiều.'",
+                    opts: ["A. sings", "B. much", "C. more better -> sửa thành 'better' hoặc 'much better'", "D. do"],
+                    why: "'better' đã là dạng so sánh hơn của 'well', không dùng thêm 'more' đằng trước ('more better' bị trùng lặp).",
+                    wrong: "A đúng thì; B nhấn mạnh so sánh; D trợ động từ đúng."
+                }
+            },
+            {
+                q: "Find the underlined part that needs correction: '<u>Flying kites</u> (A) <u>on the paddle field</u> (B) with other kids <u>are</u> (C) very <u>exciting</u> (D) to him.'",
+                options: [
+                    "A. Flying kites",
+                    "B. on the paddle field",
+                    "C. are",
+                    "D. exciting"
+                ],
+                key: 2,
+                exp: {
+                    t: "Tìm lỗi sai: 'Thả diều trên cánh đồng cùng những đứa trẻ khác rất thú vị đối với cậu ấy.'",
+                    opts: ["A. Flying kites", "B. on the paddle field", "C. are -> sửa thành 'is'", "D. exciting"],
+                    why: "Chủ ngữ là Danh động từ 'Flying kites' (Hành động thả diều) -> Tính là chủ ngữ số ít, động từ phải chia là 'is'.",
+                    wrong: "A là V-ing đúng làm chủ ngữ; B cụm trạng ngữ; D tính từ miêu tả tính chất đúng."
+                }
+            },
+            {
+                q: "Find the underlined part that needs correction: 'Do you <u>mind</u> (A) <u>to speak</u> (B) to John <u>to ask him</u> (C) to help <u>us</u>. (D)'",
+                options: [
+                    "A. mind",
+                    "B. to speak",
+                    "C. to ask him",
+                    "D. us"
+                ],
+                key: 1,
+                exp: {
+                    t: "Tìm lỗi sai: 'Bạn có phiền nói chuyện với John để nhờ anh ấy giúp chúng ta không?'",
+                    opts: ["A. mind", "B. to speak -> sửa thành 'speaking'", "C. to ask him", "D. us"],
+                    why: "Cấu trúc: 'Do you mind + V-ing?' (Bạn có phiền... không). Do đó phải dùng 'speaking'.",
+                    wrong: "A đúng cấu trúc; C to-V chỉ mục đích; D tân ngữ đúng."
+                }
+            },
+            {
+                q: "Find the underlined part that needs correction: '<u>In today's</u> (A) world, teenagers <u>rely</u> (B) <u>in</u> (C) technology <u>more than</u> (D) in the past.'",
+                options: [
+                    "A. In today's",
+                    "B. rely",
+                    "C. in",
+                    "D. more than"
+                ],
+                key: 2,
+                exp: {
+                    t: "Tìm lỗi sai: 'Trong thế giới ngày nay, thiếu niên phụ thuộc vào công nghệ nhiều hơn trước đây.'",
+                    opts: ["A. In today's", "B. rely", "C. in -> sửa thành 'on'", "D. more than"],
+                    why: "Động từ 'rely' bắt buộc đi với giới từ 'ON' (rely on sth: phụ thuộc/dựa vào cái gì).",
+                    wrong: "A, B, D đều chính xác về mặt từ vựng và cấu trúc."
+                }
+            },
+
+            // Q46-Q49 Form of word Image 3
+            {
+                q: "Phong is a (fast) _____ swimmer than Phuc.",
+                options: ["A. faster", "B. more fast", "C. fastest", "D. fastly"],
+                key: 0,
+                exp: {
+                    t: "Phong là một người bơi nhanh hơn Phúc.",
+                    opts: ["A. faster (adj so sánh hơn)", "B. more fast (sai)", "C. fastest (so sánh nhất)", "D. fastly (không tồn tại)"],
+                    why: "'fast' là tính từ ngắn, so sánh hơn thêm '-er' -> 'faster'. Có từ 'than' ở phía sau.",
+                    wrong: "B sai ngữ pháp; C là so sánh nhất; D 'fastly' không có trong tiếng Anh."
+                }
+            },
+            {
+                q: "(Make) _____ crafts or collecting things like stamps and coins are very interesting.",
+                options: ["A. Make", "B. Making", "C. To make", "D. Made"],
+                key: 1,
+                exp: {
+                    t: "Làm đồ thủ công hoặc sưu tầm những thứ như tem và tiền xu rất thú vị.",
+                    opts: ["A. Make", "B. Making (V-ing)", "C. To make", "D. Made"],
+                    why: "Đứng đầu câu làm chủ ngữ song song với 'collecting', cần một Danh động từ (V-ing) -> 'Making'.",
+                    wrong: "A là động từ nguyên mẫu; C, D không thích hợp đứng đầu làm chủ ngữ trong ngữ cảnh này."
+                }
+            },
+            {
+                q: "Shall we (try) _____ a new hobby, like learning to play the guitar this summer?",
+                options: ["A. trying", "B. to try", "C. try", "D. tried"],
+                key: 2,
+                exp: {
+                    t: "Chúng ta thử một sở thích mới, như học chơi guitar vào mùa hè này nhé?",
+                    opts: ["A. trying", "B. to try", "C. try (V-bare)", "D. tried"],
+                    why: "Cấu trúc đưa ra lời đề nghị: 'Shall we + V-bare?' (Động từ nguyên mẫu không 'to'). Dùng 'try'.",
+                    wrong: "A, B, D sai dạng động từ theo sau 'Shall we'."
+                }
+            },
+            {
+                q: "I think teenagers (have) _____ more responsibilities in the future.",
+                options: ["A. will have", "B. have", "C. had", "D. are having"],
+                key: 0,
+                exp: {
+                    t: "Tôi nghĩ rằng các bạn trẻ sẽ có nhiều trách nhiệm hơn trong tương lai.",
+                    opts: ["A. will have (Tương lai đơn)", "B. have (Hiện tại đơn)", "C. had (Quá quá đơn)", "D. are having (Hiện tại tiếp diễn)"],
+                    why: "Dự đoán trong tương lai không có căn cứ chắc chắn (có 'I think' và 'in the future') dùng thì Tương lai đơn 'will + V'.",
+                    wrong: "B, C, D sai thì đối với dấu hiệu 'in the future'."
+                }
+            },
+
+            // Q50-Q60 Sentence Transformation Image 4
+            {
+                q: "Last summer, I (visit) _____ my grandparents' village and (enjoy) _____ the peaceful atmosphere.",
+                options: [
+                    "A. visited / enjoyed",
+                    "B. visit / enjoy",
+                    "C. visiting / enjoying",
+                    "D. was visiting / enjoyed"
+                ],
+                key: 0,
+                exp: {
+                    t: "Mùa hè năm ngoái, tôi đã thăm làng của ông bà và tận hưởng bầu không khí thanh bình.",
+                    opts: ["A. visited / enjoyed", "B. visit / enjoy", "C. visiting / enjoying", "D. was visiting / enjoyed"],
+                    why: "Dấu hiệu 'Last summer' chỉ sự việc đã xảy ra và kết thúc trong quá khứ -> Dùng thì Quá quá đơn (V2/ed): visited và enjoyed.",
+                    wrong: "B, C, D chia sai thì quá khứ đơn."
+                }
+            },
+            {
+                q: "At the moment, the farmers (harvest) _____ the rice in the fields.",
+                options: [
+                    "A. harvest",
+                    "B. harvested",
+                    "C. are harvesting",
+                    "D. have harvested"
+                ],
+                key: 2,
+                exp: {
+                    t: "Hiện tại, các bác nông dân đang thu hoạch lúa trên đồng.",
+                    opts: ["A. harvest", "B. harvested", "C. are harvesting", "D. have harvested"],
+                    why: "Dấu hiệu 'At the moment' (bây giờ/ngay lúc này) -> Dùng thì Hiện tại tiếp diễn: am/is/are + V-ing ('are harvesting').",
+                    wrong: "A, B, D chia sai thì so với dấu hiệu nhận biết."
+                }
+            },
+            {
+                q: "Rewrite: It took me two hours to walk to her village. (spent)",
+                options: [
+                    "A. I spent two hours walking to her village.",
+                    "B. I spent two hours to walk to her village.",
+                    "C. I spent two hours walk to her village.",
+                    "D. I spent two hours walked to her village."
+                ],
+                key: 0,
+                exp: {
+                    t: "Tôi đã mất 2 tiếng để đi bộ đến làng của cô ấy. (Viết lại dùng 'spent')",
+                    opts: [
+                        "A. I spent two hours walking to her village. (ĐÚNG)",
+                        "B. I spent two hours to walk... (Sai)",
+                        "C. I spent two hours walk... (Sai)",
+                        "D. I spent two hours walked... (Sai)"
+                    ],
+                    why: "Cấu trúc chuyển đổi: 'It took sb + time + to-V' = 'Sb + spent + time + V-ing'.",
+                    wrong: "B, C, D sai dạng động từ đi sau 'spent'."
+                }
+            },
+            {
+                q: "Rewrite: I do yoga three times a week, but my sister does it almost every day. (frequently)",
+                options: [
+                    "A. My sister does yoga more frequently than I do.",
+                    "B. My sister does yoga less frequently than I do.",
+                    "C. My sister does yoga as frequently as I do.",
+                    "D. My sister does yoga most frequently than me."
+                ],
+                key: 0,
+                exp: {
+                    t: "Tôi tập yoga 3 lần/tuần, nhưng chị tôi tập gần như mỗi ngày. (Viết lại dùng 'frequently')",
+                    opts: [
+                        "A. Chị tôi tập yoga thường xuyên hơn tôi.",
+                        "B. Chị tôi tập ít thường xuyên hơn tôi.",
+                        "C. Chị tôi tập thường xuyên bằng tôi.",
+                        "D. Chị tôi tập thường xuyên nhất hơn tôi (sai ngữ pháp)."
+                    ],
+                    why: "Gần như mỗi ngày > 3 lần/tuần -> So sánh hơn với trạng từ: 'more frequently than'.",
+                    wrong: "B, C trái ngược ý nghĩa gốc; D sai ngữ pháp so sánh."
+                }
+            },
+            {
+                q: "Rewrite: Watching historical films is very interesting to my younger brother. (enjoy)",
+                options: [
+                    "A. My younger brother enjoys watching historical films.",
+                    "B. My younger brother enjoy to watch historical films.",
+                    "C. My younger brother enjoys watch historical films.",
+                    "D. My younger brother is enjoy watching historical films."
+                ],
+                key: 0,
+                exp: {
+                    t: "Xem phim lịch sử rất thú vị đối với em trai tôi. (Viết lại dùng 'enjoy')",
+                    opts: [
+                        "A. My younger brother enjoys watching historical films.",
+                        "B. My younger brother enjoy to watch...",
+                        "C. My younger brother enjoys watch...",
+                        "D. My younger brother is enjoy..."
+                    ],
+                    why: "Cấu trúc 'enjoy + V-ing' và chủ ngữ số ít 'My younger brother' nên 'enjoys' thêm 's'.",
+                    wrong: "B chưa chia động từ theo chủ ngữ số ít và dùng to-V; C dùng V-bare; D sai ngữ pháp 'is enjoy'."
+                }
+            },
+            {
+                q: "Rewrite: It is not a good idea to spend too much time on social networking sites. (avoid)",
+                options: [
+                    "A. You should avoid spending too much time on social networking sites.",
+                    "B. You should avoid to spend too much time on social networking sites.",
+                    "C. You avoid spend too much time on social networking sites.",
+                    "D. You avoid to spending too much time on social networking sites."
+                ],
+                key: 0,
+                exp: {
+                    t: "Dành quá nhiều thời gian trên mạng xã hội không phải là ý hay. (Viết lại dùng 'avoid')",
+                    opts: [
+                        "A. Bạn nên tránh dành quá nhiều thời gian...",
+                        "B. You should avoid to spend...",
+                        "C. You avoid spend...",
+                        "D. You avoid to spending..."
+                    ],
+                    why: "Cấu trúc khuyên bảo dùng 'should + V' và sau 'avoid + V-ing' -> 'should avoid spending'.",
+                    wrong: "B, C, D sai dạng động từ theo sau 'avoid'."
+                }
+            },
+            {
+                q: "Rewrite: We adore trying new foods from different cultures. (keen)",
+                options: [
+                    "A. We are keen on trying new foods from different cultures.",
+                    "B. We are keen to trying new foods from different cultures.",
+                    "C. We are keen at trying new foods from different cultures.",
+                    "D. We keen on trying new foods from different cultures."
+                ],
+                key: 0,
+                exp: {
+                    t: "Chúng tôi rất thích thử các món ăn mới từ các nền văn hóa khác nhau. (Viết lại dùng 'keen')",
+                    opts: [
+                        "A. We are keen on trying...",
+                        "B. We are keen to trying...",
+                        "C. We are keen at trying...",
+                        "D. We keen on trying..."
+                    ],
+                    why: "Cấu trúc tương đương: 'adore + V-ing' = 'be keen on + V-ing'. Với 'We' dùng 'are keen on trying'.",
+                    wrong: "B, C sai giới từ; D thiếu động từ 'to be'."
+                }
+            },
+            {
+                q: "Rewrite: I can't cook as well as my mother. (better)",
+                options: [
+                    "A. My mother can cook better than me.",
+                    "B. My mother cooks as better as me.",
+                    "C. My mother can't cook better than me.",
+                    "D. My mother cook better than me."
+                ],
+                key: 0,
+                exp: {
+                    t: "Tôi không thể nấu ăn giỏi bằng mẹ tôi. (Viết lại dùng 'better')",
+                    opts: [
+                        "A. Mẹ tôi có thể nấu ăn tốt hơn tôi.",
+                        "B. My mother cooks as better as me. (Sai cấu trúc)",
+                        "C. Mẹ tôi không thể nấu tốt hơn tôi. (Sai ý nghĩa)",
+                        "D. My mother cook... (Thiếu 's' ở động từ/thiếu modal verb)"
+                    ],
+                    why: "Không nấu giỏi bằng = Người kia nấu giỏi hơn -> 'My mother can cook better than me'.",
+                    wrong: "B sai cấu trúc so sánh bằng; C sai nghĩa; D sai ngữ pháp."
+                }
+            },
+            {
+                q: "Rewrite: My sister follows a diet plan, but she can't lose weight. (however)",
+                options: [
+                    "A. My sister follows a diet plan; however, she can't lose weight.",
+                    "B. My sister follows a diet plan however she can't lose weight.",
+                    "C. However my sister follows a diet plan, she can't lose weight.",
+                    "D. My sister follows a diet plan, however she can't lose weight."
+                ],
+                key: 0,
+                exp: {
+                    t: "Chị tôi theo một chế độ ăn kiêng, nhưng chị ấy không thể giảm cân. (Viết lại dùng 'however')",
+                    opts: [
+                        "A. My sister follows a diet plan; however, she can't lose weight.",
+                        "B. Thiếu dấu câu đúng",
+                        "C. Dùng sai vị trí",
+                        "D. Thiếu dấu chấm phẩy"
+                    ],
+                    why: "Quy tắc dùng 'however' nối 2 mệnh đề: Mệnh đề 1 + dấu chấm phẩy (;) + however + dấu phẩy (,) + Mệnh đề 2.",
+                    wrong: "B, C, D sai quy tắc sử dụng dấu câu khi dùng trạng từ liên kết 'however'."
+                }
+            },
+            {
+                q: "Rewrite: Jane was sick, so she missed all of the exams last week. (therefore)",
+                options: [
+                    "A. Jane was sick; therefore, she missed all of the exams last week.",
+                    "B. Jane was sick, therefore she missed all of the exams last week.",
+                    "C. Jane was sick therefore she missed all of the exams last week.",
+                    "D. Therefore Jane was sick, she missed all of the exams last week."
+                ],
+                key: 0,
+                exp: {
+                    t: "Jane bị ốm, vì vậy cô ấy đã bỏ lỡ tất cả các bài thi tuần trước. (Viết lại dùng 'therefore')",
+                    opts: [
+                        "A. Jane was sick; therefore, she missed all of the exams last week.",
+                        "B, C, D sai dấu câu chính tả"
+                    ],
+                    why: "'therefore' viết nối giữa 2 mệnh đề kết quả phải đứng sau dấu chấm phẩy (;) và trước dấu phẩy (,).",
+                    wrong: "B, C, D vi phạm quy tắc đặt dấu câu của trạng từ chỉ kết quả 'therefore'."
+                }
+            },
+            {
+                q: "Rewrite: This flat was extremely expensive. My father couldn't buy it. (for)",
+                options: [
+                    "A. This flat was too expensive for my father to buy.",
+                    "B. This flat was enough expensive for my father to buy.",
+                    "C. This flat was so expensive for my father couldn't buy it.",
+                    "D. This flat was expensive for my father to buy it."
+                ],
+                key: 0,
+                exp: {
+                    t: "Căn hộ này cực kỳ đắt. Bố tôi không thể mua nó. (Viết lại dùng 'for')",
+                    opts: [
+                        "A. Căn hộ này quá đắt để bố tôi có thể mua.",
+                        "B. Dùng 'enough' sai vị trí",
+                        "C. Sai cấu trúc 'so...that'",
+                        "D. Thừa tân ngữ 'it' ở cuối"
+                    ],
+                    why: "Cấu trúc: 'Adj + to be + too + Adj + (for sb) + to-V' (Cái gì quá... cho ai để làm gì). Lưu ý lược bỏ tân ngữ 'it'.",
+                    wrong: "B sai vị trí 'enough'; C kết hợp sai cấu trúc; D thừa tân ngữ 'it' ở cuối câu."
+                }
+            }
+        ];
+
+        // State variables
+        let userAnswers = {};
+        let shuffledQuestions = [];
+
+        // Shuffle function (Fisher-Yates)
+        function shuffleArray(array) {
+            let cur = array.slice();
+            for (let i = cur.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cur[i], cur[j]] = [cur[j], cur[i]];
+            }
+            return cur;
+        }
+
+        // Initialize quiz on load
+        window.onload = function() {
+            initQuiz();
+        };
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            // Map and process questions with options
+            shuffledQuestions = rawQuestions.map((qObj, index) => {
+                // Prepare option array with original indices
+                let optionsWithIdx = qObj.options.map((opt, originalIdx) => ({
+                    text: opt,
+                    isCorrect: originalIdx === qObj.key
+                }));
+
+                // Shuffle options
+                let shuffledOpts = shuffleArray(optionsWithIdx);
+
+                return {
+                    id: index,
+                    qText: qObj.q,
+                    customCard: qObj.customCard || null,
+                    options: shuffledOpts,
+                    exp: qObj.exp
+                };
+            });
+
+            // Render cards
+            shuffledQuestions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = "question-card p-5 sm:p-6 space-y-4";
+                card.id = `q-card-${idx}`;
+
+                let optionsHTML = q.options.map((opt, oIdx) => `
+                    <button 
+                        onclick="selectAnswer(${idx}, ${oIdx}, ${opt.isCorrect})"
+                        id="opt-${idx}-${oIdx}"
+                        class="btn-option w-full p-4 flex items-center justify-between text-base sm:text-lg font-bold text-slate-700">
+                        <span>${opt.text}</span>
+                        <span class="icon-status ml-2 text-xl"></span>
+                    </button>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white font-black px-3 py-1 rounded-xl text-sm shadow-sm shrink-0 mt-1">
+                            Câu ${idx + 1}
+                        </span>
+                        <div class="text-base sm:text-lg font-extrabold text-slate-800 leading-snug">
+                            ${q.qText}
+                        </div>
+                    </div>
+
+                    ${q.customCard ? `<div class="my-3">${q.customCard}</div>` : ''}
+
+                    <div class="grid grid-cols-1 gap-3 pt-2">
+                        ${optionsHTML}
+                    </div>
+
+                    <!-- Instant Explanation Box -->
+                    <div id="exp-box-${idx}" class="hidden explanation-box mt-4 p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 text-sm space-y-2">
+                        <div class="font-black text-purple-900 border-b border-purple-200 pb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i> GIẢI THÍCH CHI TIẾT
+                        </div>
+                        <p class="text-slate-700"><strong class="text-purple-700">1. Dịch câu:</strong> ${q.exp.t}</p>
+                        <div>
+                            <strong class="text-purple-700">2. Phân tích 4 đáp án:</strong>
+                            <ul class="list-disc list-inside pl-2 space-y-0.5 text-slate-600 mt-1">
+                                ${q.exp.opts.map(o => `<li>${o}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <p class="text-emerald-800 font-bold"><strong class="text-emerald-700">3. Tại sao đúng?</strong> ${q.exp.why}</p>
+                        <p class="text-red-700"><strong class="text-red-600">4. Tại sao các phương án khác sai?</strong> ${q.exp.wrong}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            updateProgress();
+        }
+
+        // Handle option click
+        function selectAnswer(qIdx, optIdx, isCorrect) {
+            // Prevent re-selecting if already answered
+            if (userAnswers.hasOwnProperty(qIdx)) return;
+
+            userAnswers[qIdx] = { optIdx, isCorrect };
+
+            const selectedBtn = document.getElementById(`opt-${qIdx}-${optIdx}`);
+            const expBox = document.getElementById(`exp-box-${qIdx}`);
+
+            // Disable all option buttons for this question
+            shuffledQuestions[qIdx].options.forEach((_, oI) => {
+                const btn = document.getElementById(`opt-${qIdx}-${oI}`);
+                btn.classList.add('disabled');
+            });
+
+            if (isCorrect) {
+                selectedBtn.classList.add('correct');
+                selectedBtn.querySelector('.icon-status').innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                playSound('correct');
+                confetti({
+                    particleCount: 30,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                selectedBtn.classList.add('wrong');
+                selectedBtn.querySelector('.icon-status').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600"></i>';
+                playSound('wrong');
+
+                // Highlight correct option in green for learning
+                shuffledQuestions[qIdx].options.forEach((opt, oI) => {
+                    if (opt.isCorrect) {
+                        const correctBtn = document.getElementById(`opt-${qIdx}-${oI}`);
+                        correctBtn.classList.add('correct');
+                        correctBtn.querySelector('.icon-status').innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                    }
+                });
+            }
+
+            // Reveal explanation immediately
+            expBox.classList.remove('hidden');
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const correctCount = Object.values(userAnswers).filter(a => a.isCorrect).length;
+            const total = rawQuestions.length;
+
+            document.getElementById('progress-text').innerText = `${answeredCount} / ${total} đã trả lời`;
+            document.getElementById('current-score').innerText = `${correctCount} / ${total}`;
+            
+            const pct = (answeredCount / total) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+        }
+
+        function submitQuiz() {
+            const total = rawQuestions.length;
+            const correctCount = Object.values(userAnswers).filter(a => a.isCorrect).length;
+            const percentage = Math.round((correctCount / total) * 100);
+
+            document.getElementById('final-score').innerText = correctCount;
+            document.getElementById('final-total').innerText = total;
+            document.getElementById('final-percentage').innerText = `Đạt: ${percentage}%`;
+
+            // Dynamic Teacher Motivational Feedback Logic
+            const feedbackEl = document.getElementById('teacher-feedback');
+            if (percentage < 50) {
+                feedbackEl.innerText = "“Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”";
+            } else if (percentage <= 80) {
+                feedbackEl.innerText = "“Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”";
+            } else {
+                feedbackEl.innerText = "“Làm tốt lắm, con cố gắng rinh điểm 10 ở lần sau nha!”";
+                // Extra Celebration Confetti
+                confetti({
+                    particleCount: 120,
+                    spread: 100,
+                    origin: { y: 0.5 }
+                });
+            }
+
+            // Show Modal
+            const modal = document.getElementById('result-modal');
+            const modalCard = document.getElementById('modal-card');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalCard.classList.remove('scale-95', 'opacity-0');
+                modalCard.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('result-modal');
+            const modalCard = document.getElementById('modal-card');
+            modalCard.classList.remove('scale-100', 'opacity-100');
+            modalCard.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+    </script>
+</body>
+</html>
